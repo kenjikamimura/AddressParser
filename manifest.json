@@ -1,0 +1,10 @@
+{
+  "name": "Address Parser Chrome Extension",
+  "description": "Chrome Extension to take an address from Omins software and paste in the fields in fastway.co.nz. To help speedup the fulfillment process. ",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage"]
+}
