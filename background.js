@@ -1,12 +1,17 @@
-chrome.commands.onCommand.addListener(function (command) {
+chrome.commands.onCommand.addListener(async function (command) {
   switch (command) {
     case "get-details":
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.scripting.executeScript({
-          target: { tabId: tabs[0].id },
-          function: getDetails,
-        });
+      const [activeTab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
       });
+      console.log("tabs:", activeTab);
+
+      chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        function: getDetails,
+      });
+
       break;
     default:
       console.log(`Command ${command} not found`);
