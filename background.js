@@ -41,12 +41,20 @@ async function getDetails() {
 
   const getEmail = () => document.querySelector("input[name='email']").value;
 
+  const getPhone = () => {
+    const mobile = document.querySelector("input[name='mobile']").value;
+    const phone = document.querySelector("input[name='phone']").value;
+
+    return mobile || phone || "0";
+  };
+
   const name = getName();
   const company = getCompany();
   const address = getAddress();
   const email = getEmail();
-  console.log("name:", name);
-  await chrome.storage.sync.set({ name, company, email, address });
+  const phone = getPhone();
+  console.log("phone:", phone);
+  await chrome.storage.sync.set({ name, company, email, address, phone });
 
   console.log("companyName:", company);
   console.log("address:", address);
@@ -58,9 +66,11 @@ async function pasteDetails() {
   };
 
   const setName = (name) => {
-    getInputPanel().querySelector(
+    const element = getInputPanel().querySelector(
       "input[formcontrolname='contactName']"
-    ).value = name;
+    );
+    element.value = name;
+    element.dispatchEvent(new Event("input"));
   };
 
   const setCompany = (company) => {
@@ -76,18 +86,32 @@ async function pasteDetails() {
 
   const setAddress = (address) => {
     getInputPanel().querySelector(
-      "fl-address-search input[type='text'][autocomplete='off']"
+      "fl-address-search input[type='text']"
     ).value = address;
+    getInputPanel()
+      .querySelector("fl-address-search input[type='text']")
+      .focus();
   };
 
-  const { name, company, email, address } = await new Promise((resolve) => {
-    chrome.storage.sync.get(null, (options) => {
-      resolve(options);
-    });
-  });
+  const setPhone = (phone) => {
+    const element = getInputPanel().querySelector(
+      "input[formcontrolname='phoneNumber']"
+    );
+    element.value = phone;
+    element.dispatchEvent(new Event("input"));
+  };
+
+  const { name, company, email, address, phone } = await new Promise(
+    (resolve) => {
+      chrome.storage.sync.get(null, (options) => {
+        resolve(options);
+      });
+    }
+  );
 
   setName(name);
   setCompany(company);
   setEmail(email);
+  setPhone(phone);
   setAddress(address);
 }
