@@ -8,12 +8,12 @@
   },
   "action": {
     "default_popup": "popup.html",
-	"default_icon": {
-		"16": "/images/get_started16.png",
-		"32": "/images/get_started32.png",
-		"48": "/images/get_started48.png",
-		"128": "/images/get_started128.png"
-	  }
+    "default_icon": {
+      "16": "/images/get_started16.png",
+      "32": "/images/get_started32.png",
+      "48": "/images/get_started48.png",
+      "128": "/images/get_started128.png"
+    }
   },
   "icons": {
     "16": "/images/get_started16.png",
@@ -21,5 +21,13 @@
     "48": "/images/get_started48.png",
     "128": "/images/get_started128.png"
   },
-  "permissions": ["storage", "activeTab", "scripting"]
+  "permissions": ["storage", "activeTab", "scripting"],
+  "commands": {
+    "get-details": {
+      "suggested_key": {
+        "mac": "Command+Shift+1"
+      },
+      "description": "Gets the customer details from the Omins page"
+    }
+  }
 }
