@@ -43,24 +43,40 @@ async function getDetails() {
     return document.querySelector("textarea[name='address']").value;
   };
 
-  const customerName = getName();
-  const companyName = getCompany();
+  const name = getName();
+  const company = getCompany();
   const address = getAddress();
-  console.log("name:", customerName);
-  await chrome.storage.sync.set({ customerName: customerName });
+  console.log("name:", name);
+  await chrome.storage.sync.set({ name, company });
 
-  console.log("companyName:", companyName);
+  console.log("companyName:", company);
   console.log("address:", address);
 }
 
 async function pasteDetails() {
-  const name = await new Promise((resolve) => {
-    chrome.storage.sync.get(["customerName"], (options) => {
-      resolve(options.customerName);
+  const getInputPanel = () => {
+    return document.querySelectorAll(".panel")[1];
+  };
+
+  const setName = (name) => {
+    getInputPanel().querySelector(
+      "input[formcontrolname='contactName']"
+    ).value = name;
+  };
+
+  const setCompany = (company) => {
+    getInputPanel().querySelector(
+      "input[formcontrolname='businessName']"
+    ).value = company;
+  };
+
+  const storedData = await new Promise((resolve) => {
+    chrome.storage.sync.get(null, (options) => {
+      resolve(options);
     });
   });
-  console.log("name:", name);
+  console.log("name:", storedData);
 
-  const inputPanel = document.querySelectorAll(".panel")[1];
-  inputPanel.querySelector("input[formcontrolname='contactName']").value = name;
+  setName(storedData.name);
+  setCompany(storedData.company);
 }
