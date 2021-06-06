@@ -46,7 +46,7 @@ async function getDetails() {
   const address = getAddress();
   const email = getEmail();
   console.log("name:", name);
-  await chrome.storage.sync.set({ name, company, email });
+  await chrome.storage.sync.set({ name, company, email, address });
 
   console.log("companyName:", company);
   console.log("address:", address);
@@ -74,14 +74,20 @@ async function pasteDetails() {
       email;
   };
 
-  const storedData = await new Promise((resolve) => {
+  const setAddress = (address) => {
+    getInputPanel().querySelector(
+      "fl-address-search input[type='text'][autocomplete='off']"
+    ).value = address;
+  };
+
+  const { name, company, email, address } = await new Promise((resolve) => {
     chrome.storage.sync.get(null, (options) => {
       resolve(options);
     });
   });
-  console.log("name:", storedData);
 
-  setName(storedData.name);
-  setCompany(storedData.company);
-  setEmail(storedData.email);
+  setName(name);
+  setCompany(company);
+  setEmail(email);
+  setAddress(address);
 }
