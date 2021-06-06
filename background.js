@@ -31,23 +31,22 @@ chrome.commands.onCommand.addListener(async function (command) {
 });
 
 async function getDetails() {
-  const getName = () => {
-    return document.querySelector("input[name='name']").value;
-  };
+  const getName = () => document.querySelector("input[name='name']").value;
 
-  const getCompany = () => {
-    return document.querySelector("input[name='company']").value;
-  };
+  const getCompany = () =>
+    document.querySelector("input[name='company']").value;
 
-  const getAddress = () => {
-    return document.querySelector("textarea[name='address']").value;
-  };
+  const getAddress = () =>
+    document.querySelector("textarea[name='address']").value;
+
+  const getEmail = () => document.querySelector("input[name='email']").value;
 
   const name = getName();
   const company = getCompany();
   const address = getAddress();
+  const email = getEmail();
   console.log("name:", name);
-  await chrome.storage.sync.set({ name, company });
+  await chrome.storage.sync.set({ name, company, email });
 
   console.log("companyName:", company);
   console.log("address:", address);
@@ -70,6 +69,11 @@ async function pasteDetails() {
     ).value = company;
   };
 
+  const setEmail = (email) => {
+    getInputPanel().querySelector("input[formcontrolname='email']").value =
+      email;
+  };
+
   const storedData = await new Promise((resolve) => {
     chrome.storage.sync.get(null, (options) => {
       resolve(options);
@@ -79,4 +83,5 @@ async function pasteDetails() {
 
   setName(storedData.name);
   setCompany(storedData.company);
+  setEmail(storedData.email);
 }
