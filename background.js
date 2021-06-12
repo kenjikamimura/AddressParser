@@ -5,10 +5,8 @@ chrome.commands.onCommand.addListener(async function (command) {
         active: true,
         currentWindow: true,
       });
-      console.log("tabs:", activeTab);
 
       const baseUrl = activeTab.url.split("/")[2];
-      console.log("baseUrl:", baseUrl);
 
       switch (baseUrl) {
         case "omins.snipesoft.net.nz":
@@ -25,6 +23,7 @@ chrome.commands.onCommand.addListener(async function (command) {
           break;
       }
       break;
+
     default:
       console.log(`Command ${command} not found`);
   }
@@ -53,11 +52,8 @@ async function getDetails() {
   const address = getAddress();
   const email = getEmail();
   const phone = getPhone();
-  console.log("phone:", phone);
-  await chrome.storage.sync.set({ name, company, email, address, phone });
 
-  console.log("companyName:", company);
-  console.log("address:", address);
+  await chrome.storage.sync.set({ name, company, email, address, phone });
 }
 
 async function pasteDetails() {
