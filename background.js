@@ -21,6 +21,12 @@ chrome.commands.onCommand.addListener(async function (command) {
             function: pasteDetails,
           });
           break;
+        case "bss.nzpost.co.nz":
+          chrome.scripting.executeScript({
+            target: { tabId: activeTab.id },
+            function: pasteDetailsNZPost,
+          });
+          break;
       }
       break;
 
@@ -96,6 +102,72 @@ async function pasteDetails() {
     element.value = phone;
     element.dispatchEvent(new Event("input"));
   };
+
+  const { name, company, email, address, phone } = await new Promise(
+    (resolve) => {
+      chrome.storage.sync.get(null, (options) => {
+        resolve(options);
+      });
+    }
+  );
+
+  setName(name);
+  setCompany(company);
+  setEmail(email);
+  setPhone(phone);
+  setAddress(address);
+}
+
+async function pasteDetailsNZPost() {
+  const setName = (name) => {
+    const element = document.querySelector("input#name");
+    element.focus();
+    element.value = name;
+    element.blur();
+  };
+
+  const setCompany = (company) => {
+    const element = document.querySelector("input#organisation");
+    element.focus();
+    element.value = company;
+    element.blur();
+  };
+
+  const setEmail = (email) => {
+    const element = document.querySelector("input#recipientEmail-field");
+    element.focus();
+    element.value = email;
+    element.blur();
+  };
+
+  const setAddress = (address) => {
+    const element = document.querySelector("input#domestic-address-field");
+    element.focus();
+    element.value = address;
+
+    var evt = document.createEvent("KeyboardEvent");
+    evt.initKeyEvent("keypress", true, true, window, 0, 0, 0, 0, 13, 13);
+    // element.focus();
+
+    // const element2 = document.querySelector(
+    //   "input#domestic-address-field"
+    // ).parentElement;
+    // element2.click();
+
+    // element.blur();
+    // getInputPanel()
+    //   .querySelector("fl-address-search input[type='text']")
+    //   .focus();
+  };
+
+  const setPhone = (phone) => {
+    const element = document.querySelector("input#recipientPhone-field");
+    element.focus();
+    element.value = phone;
+    element.blur();
+  };
+
+  console.log('"here":', "here");
 
   const { name, company, email, address, phone } = await new Promise(
     (resolve) => {
